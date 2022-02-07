@@ -1,8 +1,15 @@
 package toDo;
 
+import calendar.BadDayException;
+import calendar.BadMonthException;
+import calendar.BadYearException;
 import calendar.Date;
 import calendar.Duration;
 import calendar.Time;
+import calendar.TooBigHourException;
+import calendar.TooBigMinuteException;
+import calendar.TooSmallHourException;
+import calendar.TooSmallMinuteException;
 
 public class Task {
 
@@ -19,11 +26,6 @@ public class Task {
 		this.dueDate = null;
 		this.dueTime = null;
 		this.duration = null;
-	}
-	
-	public void complete(int hours, int minutes) {
-		status = Status.DONE;
-		duration = new Duration(hours,minutes);
 	}
 
 	public String getName() {
@@ -46,29 +48,34 @@ public class Task {
 		return dueDate;
 	}
 
-	public void setDueTo(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
 	public Time getDueTime() {
 		return dueTime;
 	}
-	
-	public void setDueTo(int year, int month, int day, int hour, int minute) {
-		this.dueDate = new Date(year, minute, day);
-		this.dueTime = new Time(hour,minute);
-	}
 
-	public void setDueTime(Time dueTime) {
-		this.dueTime = dueTime;
+	public void setDueTo(int minute, int hour) throws TooSmallMinuteException, TooBigMinuteException, TooSmallHourException, TooBigHourException {
+		this.dueTime = new Time(minute,hour);
+	}
+	
+	public void setDueTo(int day, int month, int year) throws BadDayException, BadMonthException, BadYearException {
+		this.dueDate = new Date(day, month, year);
+	}
+	
+	public void setDueTo(int minute, int hour, int day, int month, int year) throws BadDayException, BadMonthException, BadYearException, TooSmallMinuteException, TooBigMinuteException, TooSmallHourException, TooBigHourException {
+		this.dueDate = new Date(day, month, year);
+		this.dueTime = new Time(minute,hour);
 	}
 
 	public Status getStatus() {
 		return status;
 	}
-
-	public void setStatus(Status status) {
-		this.status = status;
+	
+	public void setInProgress() {
+		status = Status.IN_PROGRESS;
+	}
+	
+	public void complete(int hours, int minutes) throws TooSmallMinuteException, TooBigMinuteException, TooSmallHourException {
+		status = Status.DONE;
+		duration = new Duration(hours,minutes);
 	}
 
 	public Duration getDuration() {
