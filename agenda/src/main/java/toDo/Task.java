@@ -46,21 +46,21 @@ public class Task {
 		return dueDate;
 	}
 
-	public void setDueTo(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
 	public Time getDueTime() {
 		return dueTime;
 	}
-	
-	public void setDueTo(int year, int month, int day, int hour, int minute) {
-		this.dueDate = new Date(year, minute, day);
-		this.dueTime = new Time(hour,minute);
-	}
 
-	public void setDueTime(Time dueTime) {
-		this.dueTime = dueTime;
+	public void setDueTo(int minute, int hour) {
+		this.dueTime = new Time(minute,hour);
+	}
+	
+	public void setDueTo(int day, int month, int year) {
+		this.dueDate = new Date(day, month, year);
+	}
+	
+	public void setDueTo(int minute, int hour, int day, int month, int year) {
+		this.dueDate = new Date(day, month, year);
+		this.dueTime = new Time(minute,hour);
 	}
 
 	public Status getStatus() {
