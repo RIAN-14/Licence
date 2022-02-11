@@ -52,4 +52,15 @@ public class ArrayList<Type> implements List<Type> {
 		}
 		return -1;
 	}
+	@Override
+	public void clear() {
+		for (int i = 0; i < numberOfElements; i++) {
+			content[i] = null
+		}
+		numberOfElements = 0;
+	}
+	@Override
+	public boolean isEmpty() {
+		return numberOfElements == 0;
+	}
 }
