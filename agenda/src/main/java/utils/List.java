@@ -1,6 +1,6 @@
 package utils;
 
-public interface List<Type> {
+public interface List<Type> extends Iterable<Type>{
 	void add(Type element);
 	void remove(Type element);
 	void remove(int index);

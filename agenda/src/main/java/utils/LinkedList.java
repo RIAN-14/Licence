@@ -1,6 +1,14 @@
 package utils;
 
-public class LinkedList<Type> implements List<Type> {
+import java.util.Iterator;
+
+public class LinkedList<Type> implements List<Type>,Iterable<Type> {
+	
+	
+	private int numberOfElements;
+	private ListElement first;
+	private ListElement last;
+	
 	
 	private class ListElement {
 		public Type value;
@@ -13,9 +21,58 @@ public class LinkedList<Type> implements List<Type> {
 		}
 	}
 	
-	private int numberOfElements;
-	private ListElement first;
-	private ListElement last;
+
+	public class Parcours implements Iterator<Type> {
+
+		private ListElement currentIndex, toRemove;
+		
+		public Parcours() {
+			currentIndex= first;
+			toRemove=null;
+		}
+		
+		public boolean hasNext() {
+			return currentIndex != null;
+		}
+
+		public Type next() {
+			Type value = currentIndex.value;
+			toRemove=currentIndex;
+			currentIndex = currentIndex.next;
+			return value;
+		}
+		
+		public void remove() {
+			LinkedList.this.remove(toRemove);
+		}
+		
+	}
+
+	public class ParcoursEnvers implements Iterator<Type> {
+
+		private ListElement currentIndex,toRemove;
+		
+		public ParcoursEnvers() {
+			currentIndex= last;
+			toRemove=null;
+		}
+		
+		public boolean hasNext() {
+			return currentIndex.previous != null;
+		}
+
+		public Type next() {
+			Type value = currentIndex.value;
+			toRemove = currentIndex;
+			currentIndex = currentIndex.previous;
+			return value;
+		}
+		
+		public void remove() {
+			LinkedList.this.remove(toRemove);
+		}
+		
+	}
 	
 	public LinkedList() {
 		numberOfElements = 0;
@@ -122,14 +179,27 @@ public class LinkedList<Type> implements List<Type> {
 	
 	public void clear() {
 		ListElement current = first;
+		first=null;
+		ListElement next ;
 		while(current != null) {
-			current = current.next;
+			next = current.next;
+			
+			if(next != null) {
+				next.previous =null;
+			}
+			current.value=null;
+			current.next =null;
+			current = next;
 		}
 		numberOfElements = 0;
-		first = last = null;
+		last = null;
 	}
 	
 	public boolean isEmpty() {
 		return numberOfElements == 0;
+	}
+
+	public Iterator<Type> iterator() {
+		return new Parcours();
 	}
 }
