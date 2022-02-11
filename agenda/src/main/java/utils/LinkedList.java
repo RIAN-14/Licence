@@ -1,134 +1,105 @@
 package utils;
-	
-@SuppressWarnings("unused")
-public class LinkedList<Type> implements List<Type> {
 
+public class LinkedList<Type> implements List<Type> {
 	private class ListElement {
 		public Type value;
 		public ListElement next;
 		public ListElement previous;
-		
 		public ListElement(Type value) {
 			this.value = value;
+			next = null;
+			previous = null;
 		}
 	}
-	
-	private int length;
-	public ListElement first;
-	public ListElement last;
-	
+	private int numberOfElements;
+	private ListElement first;
+	private ListElement last;
 	public LinkedList() {
-		
+		numberOfElements = 0;
+		first = null;
+		last = null;
 	}
-
-	@Override
 	public void add(Type element) {
 		ListElement newElement = new ListElement(element);
-		if(first == null) {
+		if (first == null) { // liste vide
 			first = newElement;
-		} else {
+		} else { // liste non vide
 			last.next = newElement;
 			newElement.previous = last;
 		}
 		last = newElement;
-		length++;
+		numberOfElements++;
 	}
-
-	@Override
+	private void remove(ListElement le) {
+		if (le == first) {
+			first = le.next;
+			if (first != null) {
+				first.previous = null;
+			} else {
+				last = null;
+			}
+		} else if (le == last) {
+			last = le.previous;
+			last.next = null;
+		} else {
+			le.previous.next = le.next;
+			le.next.previous = le.previous;
+		}
+		le = null;
+		numberOfElements--;
+	}
 	public void remove(Type element) {
 		ListElement current = first;
-		while( current != null) {
+		while (current != null) {
 			if (current.value == element) {
-				if(current == first) { // début de liste
-					first = current.next;
-					if(first.previous != null) {
-						first.previous = null;				
-					} else {
-						last = null;
-					}
-				} else if(current == last) { // fin de liste
-					last = current.previous;
-					last.next =null;
-				} else { // milieu de liste
-					current.previous.next = current.next;
-					current.next.previous = current.previous;
-				} 
-				//instruction globale
-				current = null;
-				length--;
-				break;
+				remove(current);
 			}
 			current = current.next;
 		}
 	}
-
-	@Override
 	public void remove(int index) {
 		ListElement current = first;
 		int currentIndex = 0;
-		while( current != null) {
+		while (current != null) {
 			if (currentIndex == index) {
-				if(current == first) { // début de liste
-					first = current.next;
-					if(first.previous != null) {
-						first.previous = null;				
-					} else {
-						last = null;
-					}
-				} else if(current == last) { // fin de liste
-					last = current.previous;
-					last.next =null;
-				} else { // milieu de liste
-					current.previous.next = current.next;
-					current.next.previous = current.previous;
-				} 
-				//instruction globale
-				current = null;
-				length--;
+				remove(current);
 				break;
 			}
+			current = current.next;
 			currentIndex++;
-		}		
-	}
-
-	@Override
-	public Type get(int index) {
-		if(index > length) {
-			return null;
 		}
+	}
+	public Type get(int index) {
 		ListElement current = first;
 		int currentIndex = 0;
-		while( current != null) {
+		while (current != null) {
+System.out.print(currentIndex);
+System.out.print(' ');
 			if (currentIndex == index) {
 				return current.value;
 			}
-			index++;
+			currentIndex++;
 			current = current.next;
 		}
 		return null;
 	}
-
-	@Override
-	public int length() {
-		return length;
+	public int size() {
+		return numberOfElements;
 	}
-
-	@Override
 	public boolean contains(Type element) {
 		ListElement current = first;
-		while( current != null) {
+		while (current != null) {
 			if (current.value == element) {
 				return true;
 			}
+			current = current.next;
 		}
 		return false;
 	}
-
-	@Override
 	public int indexOf(Type element) {
 		ListElement current = first;
 		int index = 0;
-		while( current != null) {
+		while (current != null) {
 			if (current.value == element) {
 				return index;
 			}
@@ -137,5 +108,4 @@ public class LinkedList<Type> implements List<Type> {
 		}
 		return -1;
 	}
-
 }

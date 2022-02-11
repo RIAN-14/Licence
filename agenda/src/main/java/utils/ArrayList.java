@@ -2,69 +2,54 @@ package utils;
 
 @SuppressWarnings("unchecked")
 public class ArrayList<Type> implements List<Type> {
-
 	private Type content[];
 	private int numberOfElements;
-	
 	public ArrayList() {
-		content = (Type[]) new Object[10];
-		numberOfElements=0;
+		content = (Type[])(new Object[1]);
+		numberOfElements = 0;
 	}
-	
-	@Override
 	public void add(Type element) {
 		int size = content.length;
-		if(numberOfElements == size) {
-			Type biggerArray[] = (Type[]) new Object[size*2];
-			for (int i = 0; i < content.length; i++) {
-				biggerArray[i] = content[i];
+		if (numberOfElements == size) {
+			Type bigger[] = (Type[])(new Object[size * 2]);
+			for (int i = 0; i < numberOfElements; i++) {
+				bigger[i] = content[i];
 			}
-			content = (Type[]) biggerArray;
-		} else {
-			content[numberOfElements] = element;
-			numberOfElements++;
+			content = (Type[])bigger;
 		}
+		content[numberOfElements] = element;
+		numberOfElements++;
 	}
-
-	
-	@Override
 	public void remove(Type element) {
 		remove(indexOf(element));
 	}
-
-	@Override
 	public void remove(int index) {
 		numberOfElements--;
-		for (int i = index; i < content.length; i++) {
+		for (int i = index; i < numberOfElements; i++) {
 			content[i] = content[i+1];
 		}
-		content[numberOfElements] = null;;
+		content[numberOfElements] = null;
 	}
-
-	@Override
 	public Type get(int index) {
 		return content[index];
 	}
-
-	@Override
-	public int length() {
+	public int size() {
 		return numberOfElements;
 	}
-
-	@Override
 	public boolean contains(Type element) {
-		for (int i = 0; i < content.length; i++) {
-			if(content[i] == element) return true;
+		for(int i = 0; i < numberOfElements; i++) {
+			if (content[i] == element) {
+				return true;
+			}
 		}
 		return false;
 	}
-
-	@Override
 	public int indexOf(Type element) {
-		for (int i = 0; i < content.length; i++) {
-			if(content[i] == element) return i;
+		for(int i = 0; i < numberOfElements; i++) {
+			if (content[i] == element) {
+				return i;
+			}
 		}
 		return -1;
 	}
-
 }
