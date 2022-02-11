@@ -55,7 +55,7 @@ public class ArrayList<Type> implements List<Type> {
 	@Override
 	public void clear() {
 		for (int i = 0; i < numberOfElements; i++) {
-			content[i] = null
+			content[i] = null;
 		}
 		numberOfElements = 0;
 	}
